@@ -1,0 +1,121 @@
+﻿﻿@model cheeseItVS2015.Models.CheeseViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Load New Cheeses</h2>
+<p>
+    @Html.ActionLink("Load Cheese File", "Load", "LoadFile")
+</p>
+<hr />
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <h2>@Model.Message</h2>
+}
+
+@if (Model.Cheeses.Count > 0)
+{
+    <h2>Cheese List</h2>
+    <p class="alert alert-info">Note: Cheese prices are displayed in Gold Pieces.Silver Pieces for conciseness.</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Date Received
+                </th>
+                <th>
+                    Best Before Date
+                </th>
+                <th>
+                    Days To Sell
+                </th>
+                <th>
+                    Original Price
+                </th>
+                <th>
+                    Type
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cheeses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @item.DateRecieved.ToString("MM/dd/yyyy")
+                    </td>
+                    <td>
+                        @if (item.BestBeforeDate.HasValue)
+                        {
+                            @item.BestBeforeDate.Value.ToString("MM/dd/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DaysToSell)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                </tr>   }
+        </tbody>
+    </table>
+
+    <h2>Future Cheese Prices</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    1 Day Old
+                </th>
+                <th>
+                    2 Days Old
+                </th>
+                <th>
+                    3 Days Old
+                </th>
+                <th>
+                    4 Days Old
+                </th>
+                <th>
+                    5 Days Old
+                </th>
+                <th>
+                    6 Days Old
+                </th>
+                <th>
+                    7 Days Old
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, List<Decimal?>> pair in Model.FutureCheesePrices)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => pair.Key)
+                    </td>
+                    @foreach (var item in pair.Value)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item)
+                        </td>
+                    }
+                </tr>   }
+        </tbody>
+    </table>
+}
