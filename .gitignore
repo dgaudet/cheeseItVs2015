@@ -1,0 +1,5 @@
+.bowerrc
+bin/
+obj/
+*.userprefs
+*.vs
