@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Items>
+  <Item>
+    <Name>Cheddar</Name>
+    <Type>Standard</Type>
+    <Price>3.87</Price>
+    <DaysToSell>8</DaysToSell>
+    <BestBeforeDate>2017-06-15</BestBeforeDate>
+  </Item>
+  <Item>
+    <Name>Gouda</Name>
+    <Type>Standard</Type>
+    <Price>5.27</Price>
+    <DaysToSell>6</DaysToSell>
+    <BestBeforeDate>2017-06-18</BestBeforeDate>
+  </Item>
+  <Item>
+    <Name>Roquefort</Name>
+    <Type>Aged</Type>
+    <Price>14.25</Price>
+    <DaysToSell>8</DaysToSell>
+    <BestBeforeDate>2017-06-20</BestBeforeDate>
+  </Item>
+  <Item>
+    <Name>Calcagno</Name>
+    <Type>Unique</Type>
+    <Price>18.90</Price>
+    <DaysToSell></DaysToSell>
+    <BestBeforeDate></BestBeforeDate>
+  </Item>
+  <Item>
+    <Name>Queso Fresco</Name>
+    <Type>Fresh</Type>
+    <Price>2.21</Price>
+    <DaysToSell>4</DaysToSell>
+    <BestBeforeDate>2017-06-14</BestBeforeDate>
+  </Item>
+  <Item>
+    <Name>Dragon Mozzarella</Name>
+    <Type>Special</Type>
+    <Price>2.21</Price>
+    <DaysToSell>4</DaysToSell>
+    <BestBeforeDate>2017-06-16</BestBeforeDate>
+  </Item>
+</Items>
