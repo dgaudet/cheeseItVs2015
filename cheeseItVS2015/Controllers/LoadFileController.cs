@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
-using cheeseItVS2015.Models.LoadFile;
 using cheeseItVS2015.Repositories;
 using cheeseItVS2015.Services;
 
@@ -20,54 +20,74 @@ namespace cheeseItVS2015.Controllers
         // GET: /<controller>/
         public ActionResult Load()
         {
-            return View(new LoadFileViewModel());
+            return View();
         }
 
         // POST: LoadFile/Load
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Load(LoadFileViewModel model, HttpPostedFileBase file)
+        public ActionResult Load(HttpPostedFileBase file)
         {
-            //var model = new LoadFileViewModel();
-            if (model.RecievedDate == DateTime.MinValue)
+            if (file?.FileName != null)
             {
-                model.DateError = true;
-            }
-            if (file == null)
-            {
-                model.FileError = true;
-            }
-            if (!model.DateError && !model.FileError)
-            {
-                try
+                var recievedDate = DateFromFileName(file.FileName);
+                if (recievedDate == DateTime.MinValue)
                 {
-                    if (file.ContentLength > 0)
-                    {
-                        var dateRecieved = model.RecievedDate;
-                        var numCheesesLoaded = _cheeseService.LoadCheeses(file, dateRecieved);
-
-                        ViewBag.result = $"Successfully loaded {numCheesesLoaded} Cheeses.";
-                        ViewBag.resultCssClass = "alert alert-success";
-                        ViewBag.showLink = true;
-                    }
-                    else
-                    {
-                        ViewBag.result = $"No Cheeses loaded.";
-                        ViewBag.resultCssClass = "alert alert-warning";
-                        ViewBag.showLink = false;
-                    }
-                }
-                catch (Exception)
-                {
-                    ViewBag.result = $"There was a problem with the your Cheese file. Please try a different file.";
+                    ViewBag.result = "Please Enter a file with a valid file format.";
                     ViewBag.resultCssClass = "alert alert-danger";
                     ViewBag.showLink = false;
                 }
+                else
+                {
+                    try
+                    {
+                        if (file.ContentLength > 0)
+                        {
+                            var numCheesesLoaded = _cheeseService.LoadCheeses(file, recievedDate);
 
-                return View();
+                            ViewBag.result = $"Successfully loaded {numCheesesLoaded} Cheeses.";
+                            ViewBag.resultCssClass = "alert alert-success";
+                            ViewBag.showLink = true;
+                        }
+                        else
+                        {
+                            ViewBag.result = "No Cheeses loaded.";
+                            ViewBag.resultCssClass = "alert alert-warning";
+                            ViewBag.showLink = false;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        ViewBag.result = "There was a problem with the your Cheese file. Please try a different file.";
+                        ViewBag.resultCssClass = "alert alert-danger";
+                        ViewBag.showLink = false;
+                    }
+                }
             }
 
-            return View(model);
+            return View();
+        }
+
+        private DateTime DateFromFileName(string fileName)
+        {
+            DateTime fileDate;
+
+            var dateString = "";
+            if (fileName.IndexOf("_") > 0 && fileName.IndexOf(".xml") > 0)
+            {
+                try
+                {
+                    var dateWithExtension = fileName.Substring(fileName.IndexOf("_") + 1, fileName.Length - fileName.IndexOf("_") - 1);
+                    dateString = dateWithExtension.Substring(0, dateWithExtension.IndexOf(".xml"));
+                }
+                catch (Exception)
+                {
+                }
+            }
+            
+            DateTime.TryParseExact(dateString, "ddMMyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fileDate);
+
+            return fileDate;
         }
     }
 }

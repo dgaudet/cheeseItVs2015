@@ -1,6 +1,4 @@
-﻿﻿@model cheeseItVS2015.Models.LoadFile.LoadFileViewModel
-
-@{
+﻿@{
     ViewData["Title"] = "Load Cheese File";
 }
 
@@ -10,33 +8,23 @@
     <hr />
 @if (ViewBag.result != null)
 {
-    <p class="@ViewBag.resultCssClass">@ViewBag.result @if (ViewBag.showLink)
-    {<a asp-area="" asp-controller="Cheese" asp-action="Index">View Cheese List</a>}</p>
+    <p class="@ViewBag.resultCssClass">@ViewBag.result 
+        @if (ViewBag.showLink)
+        {
+            @Html.ActionLink("Back To Cheese List", "Index", "Cheese")
+        }
+    </p>
 }
 
 @using (Html.BeginForm("Load", "LoadFile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
+    <span class="text-warning">File must be in the format of name_ddMMyyyy.xml</span>
+    <div class="form-group">        
         <label class="col-md-2 control-label">File</label>
         <div class="col-md-10">
-            @Html.TextBox("file", "", new { type = "file" })
-            @if (Model != null && Model.FileError)
-            {
-                <span class="text-danger">Please choose a file.</span>
-            }
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="RecievedDate" class="col-md-2 control-label">Received Date</label>
-        <div class="col-md-10">
-            <input asp-for="RecievedDate" class="form-control" />
-            @if (Model != null && Model.DateError)
-            {
-                <span class="text-danger">Please choose a date.</span>
-            }
+            @Html.TextBox("file", "", new {type = "file", required="required"})
         </div>
     </div>
     <div class="form-group">
